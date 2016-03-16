@@ -7,17 +7,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider',
 
 	$stateProvider
 		.state('home', {
-			url: '/',
-			templateUrl: 'views/mainPage.html',
+			url: '/home',
+			templateUrl: 'views/home/home.html'
 		})
 		.state('login', {
 			url: '/login',
-			templateUrl: 'views/login.html',
-			controller: 'loginController'
+			templateUrl: 'views/login/login.html',
+			controller: 'LoginController'
 		})
 		.state('register', {
 			url: '/register',
-			templateUrl: 'views/register.html'
+			templateUrl: 'views/register/register.html',
+			controller: 'registerController'
 		})
 }]);
 

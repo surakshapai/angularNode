@@ -1,22 +1,35 @@
 angular.module('myApp')
-	.controller('loginController',
-		['$scope', '$location', 'AuthService',
-		function($scope, $location, AuthService){
+	.controller('LoginController', 
+		['$scope', '$location', '$window', 'Auth', function($scope, $location, $window, Auth) {
 			$scope.login = function() {
 				$scope.error = false;
 				$scope.disabled = true;
+				$scope.user = null;
+				// Auth.login({
+				// 	username: $scope.username,
+				// 	password: $scope.password
+				// },
+				// function(res) {
+				// 	console.log(Auth.user);
+				// 	$scope.user = Auth.user;
+				// 	$location.path('/home');
+				// },
+				// function(err) {
+				// 	$scope.error = "Failed to login";
+				// });
 
-				AuthService.login($scope.loginForm.username, $scope.loginForm.password)
+
+
+				Auth.login({username:$scope.username, password:$scope.password})
 					.then(function() {
-						$location.path('/');
+						$location.path('/home');
+						$scope.user = Auth.currentUser;
 						$scope.disabled = false;
-						$scope.loginForm = {};
 					})
 					.catch(function() {
 						$scope.error = true;
-						$scope.errorMessage = "Invalid username and/or password";
-						$scope.disabled = false;
-						$scope.loginForm = {};
+						$scope.errorMessage = "Invalid";
+						$scope.disabled = true;
 					});
 			};
 		}]);

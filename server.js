@@ -7,16 +7,18 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var configDB = require('../finalApp/config/database');
+var configDB = require('../finalApp/config/database.js');
 
+console.log(configDB.url);
 mongoose.connect(configDB.url);
 require('../finalApp/config/passport')(passport);
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
-app.set('views', __dirname + '/public/views/');
 app.use(express.static(__dirname + '/public'));
+app.set('views', __dirname + '/public/views/');
+
 app.use(morgan('dev'));
 
 app.use(bodyParser.json());

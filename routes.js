@@ -2,58 +2,32 @@ var path = require('path');
 var User = require('../finalApp/model/user.js');
 
 module.exports = function(app, passport) {
-	app.get('/', function(req, res) {
-		res.render('index', {
-			user: req.user
-		});
-	});
 
-	app.get('/register', function(req, res) {
-		res.render('register', {});
+	app.get('*', function(req, res) {
+		res.sendFile( path.join( __dirname, 'public/', 'index.html' ));
 	});
-
+	
 	app.post('/register', function(req, res) {
-		User.register(new User({
-				username: req.body.user
-			}),
-			req.body.password,
-			function(err, user) {
-				if (err) {
-					return res.status(500).json({
-						err: err
-					});
-				}
-
-				passport.authenticate('local')(req, res, function() {
-					res.redirect('/');
-				});
-			});
+		var username = req.body.username, 
+		password = req.body.password;
+		passport.authenticate('local-signup', function(err, user) {
+			if(err) {
+				res.status(400).json({"err" : 'There is some error'});
+			} else {
+				res.status(200).json({"username": user.username});
+			}
+		})(req, res);
 	});
 
-	app.get('/login', passport.authenticate('local'), function(req, res) {
-		res.redirect('/');
+	app.post('/login', function(req, res) {
+		passport.authenticate('local-login', function(err, user) {
+			if(!user) {
+				res.status(400).json({'err': 'You have not signed up'});
+			} else {
+				console.log(user.local.username);
+				res.status(200).json({'username': user.local.username});
+			}
+		})(req, res);
 	});
 
-	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect('/');
-	});
-
-	app.get('/ping', function(req, res) {
-		res.render('pong');
-	});
-
-	app.use(function(req, res, next) {
-		var err = new Error('Not Found');
-		err.status = 404;
-		next(err);
-	});
-
-	app.use(function(err, req, res) {
-		res.status(err.status || 500);
-		res.end(JSON.stringify({
-			message: err.message,
-			error: {}
-		}));
-	});
 }

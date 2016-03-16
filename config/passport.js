@@ -16,22 +16,22 @@ module.exports = function(passport) {
 	});
 
 	passport.use('local-login', new localStrategy({
-		usernameField: 'email',
+		usernameField: 'username',
 		passwordField: 'password',
 		passReqToCallback: true
 	},
-	function(req, email, password, done) {
+	function(req, username, password, done) {
 		User.findOne({
-			'local.email': email
+			'local.username': username
 		}, function(err, user){
 			if(err) {
 				return done(err);
 			}
 			if(!user) {
-				return done(null, false, req.flash('loginMessage', 'Please sign up if you are new'));
+				return done(null, false, {'loginMessage': 'Please sign up if you are new'});
 			}
 			if(!user.validPassword(password)) {
-				return done(null, false, req.flash('loginMessage', 'Ooops! Wrong password'));
+				return done(null, false, {'loginMessage':'Ooops! Wrong password'});
 			}
 			return done(null, user);
 		});
@@ -39,24 +39,26 @@ module.exports = function(passport) {
 	));
 
 	passport.use('local-signup', new localStrategy({
-		usernameField: 'email',
+		usernameField: 'username',
 		passwordField: 'password',
 		passReqToCallback: true
 	},
-	function(req, email, password, done) {
+	function(req, username, password, done) {
+
 		process.nextTick(function() {
+			
 			User.findOne({
-				'local.email': email
+				'local.username': username
 			}, function(err, user) {
 				if(err) {
 					return done(err);
 				}
 				if(user) {
-					return done(null, false, req.flash('signupMessage', 'Username already exists!'));
+					return done(null, false, {message: 'Username already exists!'});
 				} else {
 					var newUser = new User();
-					newUser.local.email = email;
-					newUser.local.password = password;
+					newUser.local.username = username;
+					newUser.local.password = newUser.generateHash(password);
 					newUser.save(function(err) {
 						if(err) {
 							throw err;
