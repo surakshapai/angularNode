@@ -1,14 +1,21 @@
 var myApp = angular.module('myApp',['ui.router']);
 
-myApp.config(['$stateProvider', '$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+myApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider',
+	function($stateProvider, $urlRouterProvider, $httpProvider) {
+
+	$httpProvider.defaults.useXDomain = true;
+	$httpProvider.defaults.withCredentials = true;
+	// delete $httpProvider.defaults.common["X-Requested-With"];
+	$httpProvider.defaults.headers.common["Accept"] = "application/json";
+	$httpProvider.defaults.headers.common["Content-Type"] = "application/json";
 
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
 		.state('home', {
 			url: '/home',
-			templateUrl: 'views/home/home.html'
+			templateUrl: 'views/home/home.html',
+			controller: 'HomeController'
 		})
 		.state('login', {
 			url: '/login',
@@ -19,6 +26,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider',
 			url: '/register',
 			templateUrl: 'views/register/register.html',
 			controller: 'registerController'
+		})
+		.state('login.facebook', {
+			url: '/auth/facebook',
+			controller: 'LoginController'
 		})
 }]);
 

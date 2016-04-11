@@ -1,10 +1,6 @@
 angular.module('myApp')
-	.factory('Auth', function($http, $q) {
-		var user = null, currentUser = null;
-
-		function changeUser(user) {
-			angular.extend(currentUser, user);
-		}
+	.factory('Auth', function($http, $q, User) {
+		var user = false, currentUser = {}, loggedInUser, userLength, userCount;
 
 		return {
 			isLoggedIn: function(user) {
@@ -16,27 +12,39 @@ angular.module('myApp')
 			},
 
 			register: function(user, success, error) {
-				$http.post('/register', user).success(function(user) {
-					changeUser(user);
-					success(user);
-				}).error(error);
+				var deferred = $q.defer();
+
+				$http.post('/register', user)
+					.success(function(data, status) {
+						if(status === 200) {
+							currentUser = data;
+							deferred.resolve({
+								user: true,
+								currentUser: data
+							})
+						} else {
+							user = false;
+							deferred.reject();
+						}
+					})
+					.error(function(data) {
+						user = false;
+						deferred.reject();
+					});
+					return deferred.promise;
 			},
 
-			// login: function(user, success, error) {
-			// 	$http.post('/login', user).success(function() {
-			// 		changeUser(user);
-			// 		success(user);
-			// 	}).error(error);
-			// },
 			login: function(user) {
 				var deferred = $q.defer();
 
 				$http.post('/login', user)
 					.success(function(data, status) {
 						if(status === 200) {
-							user = true;
 							currentUser = data;
-							deferred.resolve();
+							deferred.resolve({
+								user: true,
+								currentUser: data
+							})
 						} else {
 							user = false;
 							deferred.reject();
@@ -49,6 +57,21 @@ angular.module('myApp')
 					return deferred.promise;
 
 			},
-			currentUser: currentUser
+			getCurrentUser: function() {
+				console.log(currentUser);
+				loggedInUser = currentUser;
+				return loggedInUser;
+			},
+
+			facebookLogin: function() {
+				delete $http.defaults.headers.common['X-Requested-With'];
+				// $http.get('/auth/facebook')
+				// 	.success(function(data, status) {
+				// 		console.log(data);
+				// 	})
+				// 	.error(function(data) {
+						
+				// 	})
+			}
 		}
 	})

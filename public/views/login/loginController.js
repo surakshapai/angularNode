@@ -1,24 +1,11 @@
 angular.module('myApp')
 	.controller('LoginController', 
 		['$scope', '$location', '$window', 'Auth', function($scope, $location, $window, Auth) {
+			console.log("Controller being valled");
 			$scope.login = function() {
 				$scope.error = false;
 				$scope.disabled = true;
 				$scope.user = null;
-				// Auth.login({
-				// 	username: $scope.username,
-				// 	password: $scope.password
-				// },
-				// function(res) {
-				// 	console.log(Auth.user);
-				// 	$scope.user = Auth.user;
-				// 	$location.path('/home');
-				// },
-				// function(err) {
-				// 	$scope.error = "Failed to login";
-				// });
-
-
 
 				Auth.login({username:$scope.username, password:$scope.password})
 					.then(function() {
@@ -31,5 +18,16 @@ angular.module('myApp')
 						$scope.errorMessage = "Invalid";
 						$scope.disabled = true;
 					});
+			};
+
+			$scope.facebookLogin = function() {
+				console.log("being called");
+				Auth.facebookLogin()
+					.then(function() {
+						console.log("log in happening");
+					})
+					.catch(function() {
+						// Do nothing
+					})
 			};
 		}]);

@@ -38,4 +38,10 @@ app.use(passport.session());
 
 require('../finalApp/routes.js')(app, passport);
 
+app.get('*', function(req, res) {
+		 res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+		res.sendFile( path.join( __dirname, 'public/', 'index.html' ));
+	});
 app.listen(port);

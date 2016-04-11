@@ -7,6 +7,13 @@ var userSchema = mongoose.Schema({
 	local: {
 		username: String,
 		password: String,
+	},
+	registered: {type: Date, default: Date.now},
+	userId: Number,
+	facebook: {
+		id: Number,
+		name: String,
+		picture: String
 	}
 });
 
@@ -21,6 +28,7 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.local.password);
 }
+
 
 // Mongoose models reprensent documents which are saved and retrieved from the db
 module.exports = mongoose.model('User', userSchema);
