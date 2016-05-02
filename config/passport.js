@@ -17,11 +17,14 @@ module.exports = function(passport) {
 		});
 	});
 
+	// Handle login of user
 	passport.use('local-login', new localStrategy({
 		usernameField: 'username',
 		passwordField: 'password',
 		passReqToCallback: true
 	},
+	// Check if user exists, if he exists, check if 
+	// entered credentials are correct
 	function(req, username, password, done) {
 		User.findOne({
 			'local.username': username
@@ -88,8 +91,7 @@ module.exports = function(passport) {
 				return done(err);
 			} 
 			if(user) {
-				console.log("Checks if user");
-				return done(null, false, {message: 'Username already exists!'});
+				return done(user);
 			} else {
 				var newUser = new User();
 

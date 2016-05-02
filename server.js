@@ -1,5 +1,7 @@
+// Create and initiate express
 var express = require('express');
 var app = express();
+// Require all modules needed
 var port = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var path = require('path');
@@ -10,9 +12,11 @@ var passport = require('passport');
 var configDB = require('../finalApp/config/database.js');
 
 console.log(configDB.url);
+
 mongoose.connect(configDB.url);
 require('../finalApp/config/passport')(passport);
 
+// App configuration at server-side
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
@@ -39,9 +43,10 @@ app.use(passport.session());
 require('../finalApp/routes.js')(app, passport);
 
 app.get('*', function(req, res) {
-		 res.header("Access-Control-Allow-Origin", "*");
+		 res.header("Access-Control-Allow-Origin", 'http://facebook.com');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+  res.header('Access-Control-Allow-Credentials', false);
 		res.sendFile( path.join( __dirname, 'public/', 'index.html' ));
 	});
 app.listen(port);

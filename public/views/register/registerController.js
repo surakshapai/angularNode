@@ -13,7 +13,7 @@ angular.module('myApp')
 						password: $scope.password,
 						userId: userCount+1 })
 				.then(function(data) {
-					$location.path('/home');
+					$location.path('/home/user/challenge');
 				})
 				.catch(function() {
 					$scope.errorMessage = "Invalid";

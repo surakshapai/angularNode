@@ -1,0 +1,63 @@
+<div class="col-md-8 challengeDetailsBox">
+	<div class="cDetails">
+		<div class="cIntroText headingFont headingFontSmall bBottom2">
+			<p>Hi, {{username}}</p>
+			<p>Take a few moments to initialize your challenge! What do you want to take up?</p>
+		</div>
+		<form class="form marginT30" ng-submit="submitChallengeDetails()">
+			<div class="form-group">
+				<label class="headingFont headingFontSmaller">Title for your challenge</label>
+				<input type="text" class="form-control" ng-model="cTitle"name="challengeTitle" required>
+			</div>
+			<div class="form-group">
+				<label class="headingFont headingFontSmaller">Choose a color!</label>
+				<div class="row colorRow">
+					<!-- <div class="multiSelect colorSelect">
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="blueSteel"></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="peach" ></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="citrus"></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="periwinkle"></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="frost"></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="butter"></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="yellow"></div></a>
+						<a ng-class="{'active': isActive}" ng-click="activeButton()"><div class="colorBlock" data-color-name="seaGreen"></div></a>
+					</div> -->
+					<div ng-repeat= "colorToggle in colorToggles">
+						<button id="btn" data-color-name="{{colorToggle.name}}" ng-click="toggleActive(colorToggle)" ng-class="{'active': colorToggle.state}" ng-model="cColor"></button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="headingFont headingFontSmaller">How many days do you want to follow the challenge?</label>
+				<input type="text" class="form-control" name="numberOfDays" ng-model="cDays" required>
+			</div>
+			<div class="form-group">
+				<label class="headingFont headingFontSmaller">When do you want to start?</label>
+				<div class="date">
+					<div class="input-group input-append date" id="datePicker">
+                		<input type="text" class="form-control" name="date" ng-model="cDate"/>
+                		<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+            		</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="headingFont headingFontSmaller">Penalty Points</label>
+				<span data-toggle="tooltip" data-placement="right" title="A default of 5 points will be deducted each day that you miss following the challenge! You can have a minimum of -5 points before losing."class="glyphicon glyphicon-question-sign"></span>
+				<input type="text" class="form-control" name="penalty" ng-model="cPenalty"required placeholder="5">
+			</div>
+			<div>
+				<button type="submit" class="btn btn-success">Enter Challenge!</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#datePicker')
+        .datepicker({
+            format: 'mm/dd/yyyy'
+       });
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>

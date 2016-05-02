@@ -1,16 +1,9 @@
 angular.module('myApp')
 	.factory('Auth', function($http, $q, User) {
-		var user = false, currentUser = {}, loggedInUser, userLength, userCount;
+		var user = false, currentUser = {}, loggedInUser, userLength, userCount, isLoggedIn = false;
 
 		return {
-			isLoggedIn: function(user) {
-				if(user) {
-					return true;
-				} else {
-					return false;
-				}
-			},
-
+			
 			register: function(user, success, error) {
 				var deferred = $q.defer();
 
@@ -18,6 +11,7 @@ angular.module('myApp')
 					.success(function(data, status) {
 						if(status === 200) {
 							currentUser = data;
+							isLoggedIn = true;
 							deferred.resolve({
 								user: true,
 								currentUser: data
@@ -41,6 +35,7 @@ angular.module('myApp')
 					.success(function(data, status) {
 						if(status === 200) {
 							currentUser = data;
+							isLoggedIn = true;
 							deferred.resolve({
 								user: true,
 								currentUser: data
@@ -58,20 +53,32 @@ angular.module('myApp')
 
 			},
 			getCurrentUser: function() {
-				console.log(currentUser);
 				loggedInUser = currentUser;
 				return loggedInUser;
 			},
 
+			isUserLoggedIn: function() {
+				return isLoggedIn;
+			},
+			
 			facebookLogin: function() {
 				delete $http.defaults.headers.common['X-Requested-With'];
-				// $http.get('/auth/facebook')
-				// 	.success(function(data, status) {
-				// 		console.log(data);
-				// 	})
-				// 	.error(function(data) {
-						
-				// 	})
+				var deferred = $q.defer();
+				$http.get('/auth/facebook')
+					.success(function(data, status) {
+						console.log("Data in Facebook callback");
+						console.log(data);
+						deferred.resolve({
+							user: data
+						})
+					})
+					.error(function(data) {
+						deferred.reject();
+					})
+
+					return deferred.promise;
 			}
+
+
 		}
 	})

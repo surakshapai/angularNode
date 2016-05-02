@@ -8,13 +8,24 @@ var userSchema = mongoose.Schema({
 		username: String,
 		password: String,
 	},
-	registered: {type: Date, default: Date.now},
+	registered: {
+		type: Date,
+		default: Date.now
+	},
 	userId: Number,
 	facebook: {
 		id: Number,
 		name: String,
 		picture: String
-	}
+	},
+	challenges: [{
+		id: Number,
+		title: String,
+		color: String,
+		days: String,
+		date: Date,
+		penalty: String
+	}]
 });
 
 // Hash generation

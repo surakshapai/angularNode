@@ -1,0 +1,37 @@
+<div class="col-md-9 postDetailsBlock">
+	<div>
+		<div class="row bBottom1">
+			<div class="challengeDetails">
+				<p class="headingFont headingFontMedium"># {{currentUserChallenges[0].title}}</p>
+				<p class="headingFont headingFontSmaller fadedText">{{numberOfUserPosts}} posts</p>
+			</div>
+		</div>
+		<div class="row marginT30">
+			<!-- <h3>Write your post</h3> -->
+			<form class="form" name="postForm" ng-submit="postMessage()">
+				<div class="form-group">
+					<input type="text" class="form-control" name="userPost" ng-model="userPost" required placeholder="Make your entry!">
+				</div>
+				<div>
+					<button type="submit" class="btn btn-success">
+						Post!
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="marginT30" ng-show="isNewUser">You do not have any posts yet! Send in your first post!</div>
+	<div class="marginT30">
+		<ul class="posts">
+			<li ng-repeat="post in userPosts track by $index" class="userProfilePosts bBottom1" ng-show="post.postMessage">
+				<div class="postHeader">
+					<div class="userDetailOnPost headingFont">{{userName}}</div>
+					<div class="removePost"><a ng-click="deletePost()">x</a></div>
+				</div>	
+				<div class="userpost bodyFont">{{post.postMessage}}</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<!-- Move this to another partial after it works -->

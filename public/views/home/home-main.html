@@ -1,0 +1,36 @@
+<nav class="navbar navbar-inverse navbar-static-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">Web Challenge</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<form class="navbar-form navbar-right" on-submit="logout()">
+				<button type="submit" class="btn btn-danger">Logout!</button>
+			</form>
+		</div>
+	</div>
+</nav>
+<div class="container homepageContainer">
+	<div class="col-md-3 userBox">
+		<div class="userImage">
+			<img src="../../assets/dp.jpg">
+		</div>
+		<p class="headingFont marginT15">{{userName}}</p>
+		<div class="marginT30">
+			<p class="headingFont headingFontMedium">Your Challenges</p>
+			<ul class="userChallengeList">
+				<a ng-repeat="challengeName in currentUserChallenges" ui-sref="home.postDetails({challengeID:challengeName.id})">
+					<li class="challengeList headingFont headingFontSmaller ng-class:challengeName.color">{{challengeName.title}}</li>
+				</a>
+				<a ui-sref="home.challengeDetails"><li class="challengeList"> + Add a new challenge</li></a>
+			</ul>
+		</div>
+	</div>
+	<div ui-view></div>
+</div>

@@ -7,9 +7,13 @@ var postSchema = mongoose.Schema({
 			type: Number,
 			required: true
 		},
+		postByUser: {
+			postId: Number
+		},
 		username: String,
 		name: String
 	},
+	challengeID: Number,
 	timestamp: {type: Date, default: Date.now}
 });
 
